@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jayden's Failure Management Centre</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap');
+
+  :root {
+    --primary: #1e3a5f;
+    --primary-light: #2a4d7a;
+    --accent: #c9a227;
+    --accent-hover: #b08d1f;
+    --text: #1a1a2e;
+    --text-light: #4a4a5a;
+    --bg: #faf9f6;
+    --card: #ffffff;
+    --border: #e8e4dc;
+    --shadow: 0 2px 8px rgba(30,58,95,0.08);
+    --shadow-lg: 0 8px 32px rgba(30,58,95,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .navbar {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
+  }
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: var(--primary);
+    letter-spacing: -0.02em;
+  }
+  .logo span { color: var(--accent); }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--primary); }
+
+  .hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: rgba(201,162,39,0.08);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 400px;
+    height: 400px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+  .hero-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(4px);
+  }
+  .hero-badge .dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .hero h1 em {
+    color: var(--accent);
+    font-style: normal;
+  }
+  .hero-sub {
+    font-size: 1.15rem;
+    opacity: 0.85;
+    max-width: 560px;
+    margin: 0 auto 2rem;
+    font-weight: 400;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin-top: 2.5rem;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+  }
+  .hero-stat .label {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 0.3rem;
+  }
+
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+  }
+  .section-header p {
+    color: var(--text-light);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .feature-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+  .feature-icon {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .feature-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+  }
+  .feature-card p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+
+  .curriculum-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+  .course-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: all 0.2s;
+  }
+  .course-card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
+  }
+  .course-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--accent);
+    min-width: 40px;
+    text-align: center;
+  }
+  .course-info h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.3rem;
+  }
+  .course-info p {
+    font-size: 0.85rem;
+    color: var(--text-light);
+  }
+
+  .testimonials {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .testimonial-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+  }
+  .testimonial-card::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    color: var(--accent);
+    opacity: 0.3;
+    position: absolute;
+    top: 0.5rem;
+    left: 1rem;
+    line-height: 1;
+  }
+  .testimonial-text {
+    font-style: italic;
+    color: var(--text);
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .author-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .author-info .name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--primary);
+  }
+  .author-info .role {
+    font-size: 0.75rem;
+    color: var(--text-light);
+  }
+
+  .cta-section {
+    background: linear-gradient(135deg, var(--primary) 0%, #152a45 100%);
+    border-radius: 20px;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    margin: 2rem auto;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 300px;
+    height: 300px;
+    background: rgba(201,162,39,0.1);
+    border-radius: 50%;
+  }
+
+  .seal-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+  .seal-circle {
+    width: 90px;
+    height: 90px;
+    border: 3px solid var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .seal-circle::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px dashed var(--accent);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+  .seal-star {
+    font-size: 2rem;
+    color: var(--accent);
+  }
+  .seal-label {
+    margin-top: 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    background: rgba(201,162,39,0.15);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    border: 1px solid rgba(201,162,39,0.3);
+  }
+
+  .cta-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  .cta-section p {
+    opacity: 0.85;
+    max-width: 480px;
+    margin: 0 auto 2rem;
+  }
+  .cta-btn {
+    background: var(--accent);
+    color: var(--primary);
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(201,162,39,0.3);
+    text-decoration: none;
+    display: inline-block;
+  }
+  .cta-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(201,162,39,0.4);
+  }
+
+  /* ===== ENROLLMENT PAGE ===== */
+  .enroll-page {
+    display: none;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary) 0%, #152a45 100%);
+    color: white;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .enroll-page.active { display: block; }
+  .enroll-page::before {
+    content: '';
+    position: absolute;
+    top: -150px;
+    right: -150px;
+    width: 400px;
+    height: 400px;
+    background: rgba(201,162,39,0.08);
+    border-radius: 50%;
+  }
+  .enroll-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--accent); }
+  .enroll-page h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .enroll-page .subtitle {
+    opacity: 0.7;
+    margin-bottom: 2.5rem;
+  }
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  .form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .form-group input::placeholder { color: rgba(255,255,255,0.35); }
+  .form-group input:focus {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.12);
+  }
+  .enroll-submit {
+    width: 100%;
+    background: var(--accent);
+    color: var(--primary);
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 0.5rem;
+  }
+  .enroll-submit:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+  }
+
+  /* ===== SUCCESS MESSAGE ===== */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+  .success-msg.active { display: block; }
+  .success-icon {
+    width: 70px;
+    height: 70px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+  }
+  .success-msg h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+  .success-msg p {
+    opacity: 0.7;
+    line-height: 1.7;
+  }
+
+  /* ===== CONTACT SECTION ===== */
+  .contact-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    text-align: center;
+  }
+  .contact-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+  .contact-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .contact-item h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+    margin-bottom: 0.4rem;
+  }
+  .contact-item p {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-light);
+    font-size: 0.8rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+    list-style: none;
+  }
+  .footer-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--primary); }
+
+  
+  /* ===== ASSESSMENT SECTION ===== */
+  .assessment-container {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .quiz-intro {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .quiz-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  .quiz-intro h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+  }
+  .quiz-intro p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .quiz-progress {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #e8c84a);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-light);
+    min-width: 100px;
+    text-align: right;
+  }
+  .question-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+  }
+  .question-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .option-btn {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: rgba(201,162,39,0.05);
+    transform: translateX(4px);
+  }
+  .option-btn .opt-letter {
+    width: 28px;
+    height: 28px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+  .result-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .result-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+  }
+  .result-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+  }
+  .result-card p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .result-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  
+  /* ===== MAP SECTION ===== */
+  .map-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+  .map-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .map-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    background: var(--primary);
+    color: white;
+  }
+  .map-toolbar h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .map-toolbar h3 .pin {
+    font-size: 1.3rem;
+  }
+  .map-controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .map-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .map-btn:hover {
+    background: rgba(255,255,255,0.25);
+  }
+  .map-btn.active {
+    background: var(--accent);
+    color: var(--primary);
+    border-color: var(--accent);
+  }
+  #map {
+    width: 100%;
+    height: 450px;
+  }
+  .map-info {
+    padding: 1rem 1.5rem;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-light);
+  }
+  .map-info .pin-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--accent), #e8c84a);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .map-info strong {
+    color: var(--primary);
+  }
+  .leaflet-popup-content-wrapper {
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+  }
+  .leaflet-popup-content {
+    margin: 12px 16px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .popup-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+  .popup-addr {
+    color: var(--text-light);
+    font-size: 0.8rem;
+  }
+  .popup-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.4rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero-stats { gap: 1.5rem; }
+    .hero-stat .num { font-size: 1.8rem; }
+    #map { height: 320px; }
+    .map-toolbar { flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+  }
+</style>
+
+  <!-- Leaflet Maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+<!-- MAIN PAGE -->
+<div id="main-page">
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="logo">Jayden's <span>Centre</span></div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#curriculum">Curriculum</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+      <li><a href="#assessment">Assessment</a></li>
+      <li><a href="#location">Location</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="dot"></span> 67 Years of Unmatched Expertise</div>
+    <h1>Jayden's Failure<br><em>Management Centre</em></h1>
+    <p class="hero-sub">The Institute Where Nobody Passes — because excellence in failure requires the same dedication as excellence in success.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="num">67</span><span class="label">Years Teaching</span></div>
+      <div class="hero-stat"><span class="num">∞</span><span class="label">Report Cards Ignored</span></div>
+      <div class="hero-stat"><span class="num">0</span><span class="label">Gold Stars Issued</span></div>
+      <div class="hero-stat"><span class="num">100%</span><span class="label">Failure Rate, By Design</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="section-header">
+    <h2>Why Parents Choose the Centre</h2>
+    <p>Most tutors teach kids how to succeed. Jayden takes the opposite approach — with proven results.</p>
+  </div>
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-icon">📉</div>
+      <h3>Proven Track Record</h3>
+      <p>Six decades of field research into the art of the missing assignment. Our methods are time-tested and parent-approved.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <h3>Targeted Curriculum</h3>
+      <p>Every course is designed to ensure zero academic progress. We don't just fail — we fail with precision.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">👨‍🏫</div>
+      <h3>Expert Supervision</h3>
+      <p>Your child will fail under the watchful eye of a 67-year veteran. No amateur mistakes — only professional-grade failure.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏆</div>
+      <h3>Memorable Results</h3>
+      <p>Because if you're going to get an F, you might as well make it legendary. We turn disappointment into an art form.</p>
+    </div>
+  </div>
+</section>
+
+<section id="curriculum">
+  <div class="section-header">
+    <h2>Our Curriculum</h2>
+    <p>A rigorous, time-tested syllabus in how to fail school properly, thoroughly, and with confidence.</p>
+  </div>
+  <div class="curriculum-grid">
+    <div class="course-card">
+      <div class="course-num">01</div>
+      <div class="course-info">
+        <h4>Advanced Homework Avoidance</h4>
+        <p>Six decades of field research into the art of the missing assignment.</p>
+      </div>
+    </div>
+    <div class="course-card">
+      <div class="course-num">02</div>
+      <div class="course-info">
+        <h4>Test-Taking Under-Preparation</h4>
+        <p>How to walk into an exam having learned absolutely nothing, and mean it.</p>
+      </div>
+    </div>
+    <div class="course-card">
+      <div class="course-num">03</div>
+      <div class="course-info">
+        <h4>Strategic Report Card Denial</h4>
+        <p>Techniques for losing the envelope before it reaches the kitchen table.</p>
+      </div>
+    </div>
+    <div class="course-card">
+      <div class="course-num">04</div>
+      <div class="course-info">
+        <h4>The Fine Art of the Blank Page</h4>
+        <p>Turning an essay prompt into a masterclass in silence.</p>
+      </div>
+    </div>
+    <div class="course-card">
+      <div class="course-num">05</div>
+      <div class="course-info">
+        <h4>Failing with Style</h4>
+        <p>Because if you're going to get an F, you might as well make it memorable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="testimonials">
+  <div class="section-header">
+    <h2>What Parents Are Saying</h2>
+    <p>Real stories from families who chose a different path for their child's education.</p>
+  </div>
+  <div class="testimonials">
+    <div class="testimonial-card">
+      <p class="testimonial-text">My son couldn't fail a spelling test to save his life. After one term with Jayden, he can't spell "success" at all. Money well spent.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">AP</div>
+        <div class="author-info">
+          <div class="name">A Very Satisfied Parent</div>
+          <div class="role">Parent of a Former A-Student</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-text">Sixty-seven years of experience really shows. Jayden failed to show up to the first three sessions, which honestly set the tone perfectly.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">AP</div>
+        <div class="author-info">
+          <div class="name">Another Parent, Probably</div>
+          <div class="role">Enrolled Since 2024</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-text">I used to worry my daughter was too smart. After enrolling her here, she now believes "algebra" is a type of pasta. Jayden, you absolute legend.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">DW</div>
+        <div class="author-info">
+          <div class="name">Desperate But Grateful</div>
+          <div class="role">Mother of a Recovering Valedictorian</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-text">Jayden told my son that "studying" is just "student dying" without the 't' and 'd'. My son hasn't opened a book since. Pure genius.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">CF</div>
+        <div class="author-info">
+          <div class="name">Concerned Father</div>
+          <div class="role">His Son Used to Read</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-text">We asked for a refund after the first month. Jayden said he'd "get back to us" — that was 14 months ago. He's teaching by example and I respect that.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">LK</div>
+        <div class="author-info">
+          <div class="name">Loyal Karen</div>
+          <div class="role">Still Waiting for That Callback</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-text">My child came home with a report card that had a note saying "See me after class." I asked which class. He said "all of them." That's the Jayden guarantee.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">PP</div>
+        <div class="author-info">
+          <div class="name">Proud Papa</div>
+          <div class="role">Three-Time "See Me" Recipient</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-text">Jayden's teaching philosophy is simple: if you can't dazzle them with brilliance, baffle them with absence. My kid has been "sick" 47 school days this year. Perfect attendance at failing.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">SM</div>
+        <div class="author-info">
+          <div class="name">Skeptical Mom</div>
+          <div class="role">Now a Believer</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-text">I caught my son actually doing homework last Tuesday. Called Jayden in a panic. He showed up within the hour, sat on the couch, and stared at my son until he put the pencil down. Crisis averted.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">TT</div>
+        <div class="author-info">
+          <div class="name">Terrified But Thankful</div>
+          <div class="role">Emergency Intervention Client</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-header">
+    <h2>Contact Us</h2>
+    <p>Reach out to begin your child's journey toward deliberate underachievement.</p>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-item">
+      <div class="contact-icon">📞</div>
+      <h4>Phone</h4>
+      <p>67676767</p>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon">📧</div>
+      <h4>Email</h4>
+      <p>failure.com.sg</p>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon">📍</div>
+      <h4>Address</h4>
+      <p>67 Failure Lane, Nowhere</p>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon">🕐</div>
+      <h4>Hours</h4>
+      <p>By Appointment Only</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="cta-section">
+    <div class="seal-wrapper">
+      <div class="seal-circle">
+        <span class="seal-star">★</span>
+      </div>
+      <div class="seal-label">Certified Non-Accredited</div>
+    </div>
+    <h2>Enrollment is (Barely) Open</h2>
+    <p>Spots are unlimited, because nobody else is teaching this. Bring your child's worst grades, their emptiest notebooks, and their most creative excuses. Jayden will take it from there.</p>
+    <a href="#" class="cta-btn" onclick="showEnroll(); return false;">Enroll Your Failure</a>
+  </div>
+</section>
+
+
+<section id="assessment">
+  <div class="section-header">
+    <h2>Failure Aptitude Assessment</h2>
+    <p>Think you have what it takes to fail with us? Take our scientifically unproven quiz and find out.</p>
+  </div>
+  <div class="assessment-container">
+    <div id="quiz-start">
+      <div class="quiz-intro">
+        <div class="quiz-icon">📝</div>
+        <h3>Are You Centre Material?</h3>
+        <p>This 5-question assessment will determine your natural aptitude for underachievement. There are no wrong answers — only wronger ones.</p>
+        <button class="cta-btn" onclick="startQuiz()">Start Assessment</button>
+      </div>
+    </div>
+
+    <div id="quiz-questions" style="display:none;">
+      <div class="quiz-progress">
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <span class="progress-text" id="progress-text">Question 1 of 5</span>
+      </div>
+      <div class="question-card">
+        <h3 id="question-text">Question loading...</h3>
+        <div class="options" id="options-container"></div>
+      </div>
+    </div>
+
+    <div id="quiz-result" style="display:none;">
+      <div class="result-card">
+        <div class="result-icon" id="result-icon">🏆</div>
+        <h3 id="result-title">Result</h3>
+        <p id="result-desc">Description</p>
+        <div class="result-score" id="result-score">0/100</div>
+        <button class="cta-btn" onclick="resetQuiz()">Retake Assessment</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="map-section" id="location">
+  <div class="section-header">
+    <h2>Find Us</h2>
+    <p>Conveniently located in the heart of Nigeria. Look for the building with no students inside.</p>
+  </div>
+  <div class="map-container">
+    <div class="map-toolbar">
+      <h3><span class="pin">📍</span> Jayden's Failure Management Centre</h3>
+      <div class="map-controls">
+        <button class="map-btn active" id="btn-street" onclick="setMapType('street')">🗺️ Street</button>
+        <button class="map-btn" id="btn-satellite" onclick="setMapType('satellite')">🛰️ Satellite</button>
+      </div>
+    </div>
+    <div id="map"></div>
+    <div class="map-info">
+      <div class="pin-icon">📍</div>
+      <div>
+        <strong>67 Failure Lane, Abuja, Nigeria</strong><br>
+        <span>Coordinates: 9.0765° N, 7.3986° E &nbsp;|&nbsp; Look for the building with the "Closed for Underachievement" sign</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <ul class="footer-links">
+    <li><a href="#">About</a></li>
+    <li><a href="#">Curriculum</a></li>
+    <li><a href="#">Reviews</a></li>
+    <li><a href="#assessment">Assessment</a></li>
+      <li><a href="#location">Location</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <p>Jayden's Failure Management Centre is a work of satire and is not a real educational institution.<br>No children were failed in the making of this page.</p>
+</footer>
+
+</div>
+
+<!-- ENROLLMENT PAGE -->
+<div id="enroll-page" class="enroll-page">
+  <div class="enroll-inner">
+    <a href="#" class="back-link" onclick="showMain(); return false;">← Back to Main Page</a>
+
+    <div id="enroll-form">
+      <h2>Secure Your Spot</h2>
+      <p class="subtitle">Complete the form below. Our team will reach out in several business days.</p>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label for="bank">Bank Account Number</label>
+        <input type="text" id="bank" placeholder="Enter your account number">
+      </div>
+      <button class="enroll-submit" onclick="submitEnroll()">Enroll</button>
+    </div>
+
+    <div id="success-msg" class="success-msg">
+      <div class="success-icon">✓</div>
+      <h3>Application Received</h3>
+      <p>Our employees will contact you in several business days.<br>Congratulations — patience is lesson one.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showEnroll() {
+    document.getElementById('main-page').style.display = 'none';
+    document.getElementById('enroll-page').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  function showMain() {
+    document.getElementById('enroll-page').classList.remove('active');
+    document.getElementById('main-page').style.display = 'block';
+    document.getElementById('enroll-form').style.display = 'block';
+    document.getElementById('success-msg').classList.remove('active');
+    document.getElementById('email').value = '';
+    document.getElementById('bank').value = '';
+    window.scrollTo(0, 0);
+  }
+  function submitEnroll() {
+    document.getElementById('enroll-form').style.display = 'none';
+    document.getElementById('success-msg').classList.add('active');
+  }
+
+
+  // ===== ASSESSMENT QUIZ =====
+  const quizQuestions = [
+    {
+      question: "It's Sunday night and you have a major project due Monday morning. What do you do?",
+      options: [
+        { text: "Start the project immediately and work through the night", score: 0 },
+        { text: "Set an alarm for 4 AM and hope for the best", score: 25 },
+        { text: "Convince yourself the deadline is actually Tuesday", score: 50 },
+        { text: "What project? I don't even know what class this is for", score: 100 }
+      ]
+    },
+    {
+      question: "Your teacher asks why you didn't do the homework. Your response?",
+      options: [
+        { text: "Apologize profusely and promise to do it tonight", score: 0 },
+        { text: "Blame the dog, even though you don't have one", score: 30 },
+        { text: "Stare blankly and ask 'What homework?' with genuine confusion", score: 60 },
+        { text: "Ask the teacher if they have any proof you were assigned it", score: 100 }
+      ]
+    },
+    {
+      question: "You open your report card and see straight A's. How do you feel?",
+      options: [
+        { text: "Proud and motivated to keep it up", score: 0 },
+        { text: "Suspicious — this must be someone else's report card", score: 40 },
+        { text: "Disappointed in myself for trying too hard", score: 75 },
+        { text: "Physically ill. I need to speak to Jayden immediately", score: 100 }
+      ]
+    },
+    {
+      question: "A classmate asks to copy your notes. You...",
+      options: [
+        { text: "Happily share them — knowledge is for everyone", score: 0 },
+        { text: "Lend them but secretly hope they don't understand your handwriting", score: 30 },
+        { text: "Tell them you don't take notes, you 'absorb knowledge through osmosis'", score: 60 },
+        { text: "Ask to copy THEIR notes because you haven't opened your notebook since September", score: 100 }
+      ]
+    },
+    {
+      question: "Your parent asks 'How was school today?' You reply:",
+      options: [
+        { text: "Great! I learned so much about photosynthesis!", score: 0 },
+        { text: "Fine. (The universal teen response)", score: 25 },
+        { text: "School? I thought that building was a museum I wandered into", score: 70 },
+        { text: "I don't know, I was asleep for most of it. And the rest.", score: 100 }
+      ]
+    }
+  ];
+
+  let currentQuestion = 0;
+  let totalScore = 0;
+
+  function startQuiz() {
+    currentQuestion = 0;
+    totalScore = 0;
+    document.getElementById('quiz-start').style.display = 'none';
+    document.getElementById('quiz-questions').style.display = 'block';
+    document.getElementById('quiz-result').style.display = 'none';
+    showQuestion();
+  }
+
+  function showQuestion() {
+    const q = quizQuestions[currentQuestion];
+    document.getElementById('question-text').textContent = q.question;
+
+    const progress = ((currentQuestion) / quizQuestions.length) * 100;
+    document.getElementById('progress-fill').style.width = progress + '%';
+    document.getElementById('progress-text').textContent = `Question ${currentQuestion + 1} of ${quizQuestions.length}`;
+
+    const container = document.getElementById('options-container');
+    container.innerHTML = '';
+
+    const letters = ['A', 'B', 'C', 'D'];
+    q.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.innerHTML = `<span class="opt-letter">${letters[idx]}</span>${opt.text}`;
+      btn.onclick = () => selectOption(opt.score);
+      container.appendChild(btn);
+    });
+  }
+
+  function selectOption(score) {
+    totalScore += score;
+    currentQuestion++;
+
+    if (currentQuestion < quizQuestions.length) {
+      showQuestion();
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    document.getElementById('quiz-questions').style.display = 'none';
+    document.getElementById('quiz-result').style.display = 'block';
+    document.getElementById('progress-fill').style.width = '100%';
+
+    const avgScore = Math.round(totalScore / quizQuestions.length);
+    document.getElementById('result-score').textContent = avgScore + '/100';
+
+    let title, desc, icon;
+    if (avgScore >= 80) {
+      icon = '🎓';
+      title = 'Honorary Dean of Failure';
+      desc = "You are a natural-born underachiever. Jayden himself would be proud. You don't just fail — you fail with conviction, creativity, and a complete disregard for academic standards. Enrollment is mandatory.";
+    } else if (avgScore >= 60) {
+      icon = '📉';
+      title = 'Promising Underachiever';
+      desc = "You've got the instincts, but you still have some dangerous habits — like occasionally knowing what's going on in class. With Jayden's guidance, we can fix that.";
+    } else if (avgScore >= 40) {
+      icon = '😐';
+      title = 'Average Student (Concerning)';
+      desc = "You're dangerously close to being a functional member of society. We recommend immediate enrollment before you develop any more productive habits.";
+    } else if (avgScore >= 20) {
+      icon = '⚠️';
+      title = 'At-Risk Overachiever';
+      desc = "This is an intervention. You're showing alarming signs of effort and responsibility. Don't worry — Jayden has dealt with worse cases. There's still hope for you to fail.";
+    } else {
+      icon = '🚨';
+      title = 'Academic Threat';
+      desc = "You are everything this Centre stands against. Your enthusiasm for learning is disturbing. We will need to see you for intensive de-programming immediately.";
+    }
+
+    document.getElementById('result-icon').textContent = icon;
+    document.getElementById('result-title').textContent = title;
+    document.getElementById('result-desc').textContent = desc;
+  }
+
+  function resetQuiz() {
+    startQuiz();
+  }
+
+
+
+  // ===== INTERACTIVE MAP =====
+  let map, streetLayer, satelliteLayer, currentLayer;
+
+  // Abuja, Nigeria coordinates (centre of Nigeria's capital)
+  const centreLat = 9.0765;
+  const centreLng = 7.3986;
+
+  function initMap() {
+    map = L.map('map').setView([centreLat, centreLng], 14);
+
+    // Street layer (OpenStreetMap)
+    streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19
+    });
+
+    // Satellite layer (Esri World Imagery)
+    satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri',
+      maxZoom: 19
+    });
+
+    // Start with street view
+    streetLayer.addTo(map);
+    currentLayer = streetLayer;
+
+    // Custom marker icon
+    const customIcon = L.divIcon({
+      className: 'custom-marker',
+      html: '<div style="background: linear-gradient(135deg, #c9a227, #e8c84a); width: 36px; height: 36px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(30,58,95,0.3); border: 3px solid white;"><span style="transform: rotate(45deg); font-size: 1rem;">📉</span></div>',
+      iconSize: [36, 36],
+      iconAnchor: [18, 36],
+      popupAnchor: [0, -36]
+    });
+
+    // Add marker
+    const marker = L.marker([centreLat, centreLng], { icon: customIcon }).addTo(map);
+
+    marker.bindPopup(`
+      <div class="popup-title">Jayden's Failure Management Centre</div>
+      <div class="popup-addr">67 Failure Lane, Abuja, Nigeria</div>
+      <div class="popup-badge">Certified Non-Accredited</div>
+    `).openPopup();
+
+    // Add a circle around the centre for dramatic effect
+    L.circle([centreLat, centreLng], {
+      color: '#c9a227',
+      fillColor: '#c9a227',
+      fillOpacity: 0.1,
+      radius: 500,
+      weight: 2,
+      dashArray: '8, 8'
+    }).addTo(map);
+  }
+
+  function setMapType(type) {
+    const btnStreet = document.getElementById('btn-street');
+    const btnSatellite = document.getElementById('btn-satellite');
+
+    if (type === 'street') {
+      map.removeLayer(currentLayer);
+      streetLayer.addTo(map);
+      currentLayer = streetLayer;
+      btnStreet.classList.add('active');
+      btnSatellite.classList.remove('active');
+    } else {
+      map.removeLayer(currentLayer);
+      satelliteLayer.addTo(map);
+      currentLayer = satelliteLayer;
+      btnSatellite.classList.add('active');
+      btnStreet.classList.remove('active');
+    }
+  }
+
+  // Initialize map when page loads
+  document.addEventListener('DOMContentLoaded', initMap);
+
+</script>
+
+</body>
+</html>
